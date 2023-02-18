@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter.filedialog import askopenfile 
 from tkinter.filedialog import *
+import time
+from mutagen.mp3 import MP3
 import os
 import fnmatch
 from pygame import mixer
