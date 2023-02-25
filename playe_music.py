@@ -1,8 +1,9 @@
 from tkinter import *
 from tkinter.filedialog import askopenfile 
+from tkinter import filedialog
 from tkinter.filedialog import *
 import time
-from mutagen.mp3 import MP3
+#from mutagen.mp3 import MP3
 import os
 import fnmatch
 from pygame import mixer
@@ -12,7 +13,7 @@ Canvas.title ("play music")
 Canvas.geometry("500x500")
 Canvas.config (bg = "white")
 
-def openfiles():
+"""def openfiles():
     global mp3_files
     global path
     path = askopenfilename( )
@@ -22,8 +23,17 @@ def openfiles():
     for files in mp3_files:
         list_lecture.insert(END, files)
         print(files)
-        print(mp4_files)
+        print(mp4_files)"""
 
+def add_song():
+    global song
+    song = filedialog.askopenfilename(initialdir='\musique', title='Choose the songs to import', filetypes=(("mp3 Files", "*.mp3"), ))
+   
+    #Enlever l'affichage du chemin dans la listbox pour garder uniquement le titre
+    song = song.replace (".mp3", "")
+
+    #inserer la musique dans la listbox
+    list_lecture.insert(END,song)
 mixer.init() #initialiser  le son
 
 img_precedent = PhotoImage(file="prev.png")
@@ -35,11 +45,11 @@ img_suivant = PhotoImage(file="next.png")
 def select():
     label.config(text=list_lecture.get("anchor"))
     #Retrieve()  
-    mixer.music.load(path+"\\"+list_lecture.get("anchor"))
+    mixer.music.load(song+"\\"+list_lecture.get("anchor"))
     #folder = chemin_lecture+"\playlist"
-    mixer.music.load(path)
+    mixer.music.load(song)
     music = list_lecture.get(ACTIVE)
-    mixer.music.load(path + "\\" + list_lecture.get(ACTIVE))
+    mixer.music.load(song + "\\" + list_lecture.get(ACTIVE))
     mixer.music.play()
     
 def stop():
@@ -60,7 +70,7 @@ def suivant():
     nom_son_suivant = list_lecture.get(son_suivant)
 
     label.config(text=nom_son_suivant)
-    mixer.music.load(path+"\\"+nom_son_suivant)
+    mixer.music.load(song+"\\"+nom_son_suivant)
     mixer.music.play()
 
     list_lecture.select_clear(0,"end")
@@ -73,7 +83,7 @@ def precedent():
     nom_son_precedent = list_lecture.get(son_precedent)
 
     label.config(text=nom_son_precedent)
-    mixer.music.load(path+"\\"+nom_son_precedent)
+    mixer.music.load(song+"\\"+nom_son_precedent)
     mixer.music.play()
 
     list_lecture.select_clear(0,"end")
@@ -100,7 +110,7 @@ pauseboutton.pack(pady=15, in_=top, side=LEFT)
 suivantboutton = Button(Canvas, text="suivant",image=img_suivant, bg = "white", borderwidth=0, command=suivant)
 suivantboutton.pack(pady=15, in_=top, side=LEFT)
 
-selection = Button(Canvas, text="selection son", bg = "white", borderwidth=0, command=openfiles)
+selection = Button(Canvas, text="selection son", bg = "white", borderwidth=0, command=add_song)
 selection.pack(pady=15, in_=top, side=LEFT)
 
 
